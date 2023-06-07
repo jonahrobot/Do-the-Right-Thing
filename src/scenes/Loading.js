@@ -14,6 +14,7 @@ class Loading extends Phaser.Scene{
         this.load.image('photo_5','./assets/Photo_5.png');
         this.load.image('photo_6','./assets/Photo_6.png');
         this.load.image('photo_spot','./assets/Photo_Spot.png');
+        this.load.image('movie_box','./assets/movieTitle.jpg')
         this.load.image('box','./assets/Box.png');
 
         //this.load.image('spr_rail','./assets/rail.png');
@@ -25,6 +26,6 @@ class Loading extends Phaser.Scene{
     }
 
     update(){
-        this.scene.start('playScene');
+        this.scene.start('Title');
     }
 }

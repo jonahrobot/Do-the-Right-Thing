@@ -10,7 +10,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 940,
     height: 580,
-    backgroundColor: '#3ECC4B',
+    backgroundColor: '#000000',
     roundPixels: true,
     pixelArt: false,
     autoCenter: true,
@@ -24,7 +24,7 @@ let config = {
           }
       }
     },
-    scene: [Loading, Play]
+    scene: [Loading, Title, Play]
   }
 
 let game = new Phaser.Game(config);

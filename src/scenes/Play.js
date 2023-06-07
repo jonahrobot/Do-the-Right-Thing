@@ -8,6 +8,18 @@ class Play extends Phaser.Scene{
         let w = game.config.width;
         let h = game.config.height;
 
+        // Timer Font
+        let timerConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            color: '#FFFFFF',
+            lineSpacing: 20,
+            wordWrap: { width: 500, useAdvancedWrap: true, spacing: 10 }
+        }
+
+        this.timer = 6000;
+        this.initTime = this.time.now;
+
         // Pre Define Target Spots
         this.spots = [[490,122],[488,372],[686,244],[292,244],[94,123]]
         this.spotIndex = 0;
@@ -45,6 +57,8 @@ class Play extends Phaser.Scene{
 
         // Create Target
         this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0).setDepth(-1));
+    
+        this.timerText = this.add.text(w - 64, 64, this.timer, timerConfig).setOrigin(0.5);
     }
 
     update(){
@@ -56,7 +70,9 @@ class Play extends Phaser.Scene{
 
         this.physics.world.collide(this.pictures, this.target, this.collision, null, this);
 
-        
+        this.timer = Math.floor(this.timer) - Math.floor((this.time.now-this.initTime)/1000);
+        this.timerText.text = this.timer;
+
         // No target, create new target
         if(this.target.getLength() == 0){
             this.spotIndex += 1
