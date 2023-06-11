@@ -4,6 +4,7 @@ class Scene2_Title extends Phaser.Scene{
     }
 
     preload(){
+        this.cameras.main.fadeIn(1000, 0, 0, 0)
         this.keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
 

@@ -9,6 +9,10 @@ class Play extends Phaser.Scene{
         let w = game.config.width;
         let h = game.config.height;
 
+        // Set up Camera
+        this.cameras.main.setViewport(0, 0, w,h);
+        this.camera = this.cameras.add(0, 0, w,h);
+
         // Set up timer text
         let timerConfig = {
             fontFamily: 'Courier',
@@ -21,13 +25,13 @@ class Play extends Phaser.Scene{
         this.timerText = this.add.text(w - 128, 64, this.timer, timerConfig).setOrigin(0.5);
 
         // Start Timer
-        this.timerLength = 20000;
+        this.timerLength = 10;
 
         // When timer ends trigger play.onGameTimerend
         this.timedEvent = this.time.addEvent({  
             delay: this.timerLength, 
-            callback: this.onGameTimerend(),
-            args: [],
+            callback: this.onGameTimerend,
+            args: [this],
             loop: false,
             repeat: 0,
             timeScale: 1,
@@ -107,7 +111,11 @@ class Play extends Phaser.Scene{
     }
 
     // Runs when game timer ends
-    onGameTimerend(){
-        console.log("loss");
+    onGameTimerend(mainThis){
+        mainThis.camera.fadeOut(5000, 0.5, 0, 0);
+
+        mainThis.camera.on('camerafadeoutcomplete', () =>{
+            mainThis.scene.start("Scene2_Title");
+        })
     }
 }
