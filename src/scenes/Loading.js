@@ -5,6 +5,7 @@ class Loading extends Phaser.Scene{
 
     preload(){
        
+        this.load.image('spr_hand','./assets/hand.png')
 
         this.load.setPath("./assets/Game 1/"); 
         // Game 1 Assets

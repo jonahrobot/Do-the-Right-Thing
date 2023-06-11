@@ -1,5 +1,5 @@
 // Scene 1: Hall of Fame Wall
-class Play extends Phaser.Scene{
+class Play_1 extends Phaser.Scene{
     constructor(){
         super("playScene");
     }
@@ -51,6 +51,19 @@ class Play extends Phaser.Scene{
         this.add.image(0,0,'spr_background_1').setOrigin(0).setDepth(-1);
         this.add.image(299/2,h,'box').setOrigin(0.5,0.9).setDepth(1);
 
+        // Add tutorial
+        this.tutorialHand = this.add.image(w*0.25,400,'spr_hand').setDepth(100).setRotation(-45)
+
+        // Fade water out
+        var tween = this.tweens.add({
+            targets: this.tutorialHand,
+            duration: 2000,
+            ease: 'Linear',
+            x: 490-xoff,
+            y: 122-yoff,
+            repeat: -1
+        });
+    
         // Set up pictures and targets groups
         let config = {
             classType: Phaser.Physics.Arcade.Sprite,
@@ -93,6 +106,8 @@ class Play extends Phaser.Scene{
         // If no target, create new target
         if(this.target.getLength() == 0){
             this.spotIndex += 1
+
+            this.tutorialHand.destroy();
 
             if(this.spotIndex < this.spots.length){
                 this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0.5).setDepth(-1));
