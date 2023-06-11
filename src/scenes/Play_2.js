@@ -107,11 +107,25 @@ class Play_2 extends Phaser.Scene{
                     this.spots[this.spotIndex][1],
                     this.carTargets[this.spotIndex]).setOrigin(0.5).setDepth(this.spots.length-this.spotIndex-1));
             }else{
+
+                this.water = this.add.image(w/2,h/2,'water').setDepth(10);
+
+                // Fade water out
+                var tween = this.tweens.add({
+                    targets: this.water,
+                    duration: 1000,
+                    ease: 'Linear',
+                    alpha: 0,
+                    repeat: 0
+                });
+                
+                // For each car part drop it on ground
                 this.pictures.getChildren().forEach(function(item) {
-                   item.drop();
-                }, this);
-                this.itemsFell = true;
-                this.spotIndex = -1;
+                    item.drop();
+                    }, this);
+                    this.itemsFell = true;
+                    this.spotIndex = -1;
+            
             }
             
             // Create new picture
@@ -135,7 +149,7 @@ class Play_2 extends Phaser.Scene{
         mainThis.camera.fadeOut(5000, 0.5, 0, 0);
 
         mainThis.camera.on('camerafadeoutcomplete', () =>{
-            mainThis.scene.start("Scene2_Title");
+            mainThis.scene.start("Scene3_Title");
         })
     }
 }

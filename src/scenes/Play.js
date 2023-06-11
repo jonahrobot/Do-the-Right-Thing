@@ -39,7 +39,9 @@ class Play extends Phaser.Scene{
         });
        
         // Pre-define Target Spots
-        this.spots = [[490,122],[488,372],[686,244],[292,244],[94,123]]
+        let xoff = -80
+        let yoff = -111
+        this.spots = [[490-xoff,122-yoff],[488-xoff,372-yoff],[686-xoff,244-yoff],[292-xoff,244-yoff],[94-xoff,123-yoff]]
         this.spotIndex = 0; // Tracks what target coordinate is next
 
         // Set up order for picture frames
@@ -73,7 +75,7 @@ class Play extends Phaser.Scene{
         });
 
         // Create first Target
-        this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0).setDepth(-1));
+        this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0.5).setDepth(-1));
 
     }
 
@@ -93,7 +95,7 @@ class Play extends Phaser.Scene{
             this.spotIndex += 1
 
             if(this.spotIndex < this.spots.length){
-                this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0).setDepth(-1));
+                this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0.5).setDepth(-1));
             }
             
             // Create new picture
