@@ -40,7 +40,7 @@ class Scene2_Title extends Phaser.Scene{
     // Check for right key input
     update(){
         if (Phaser.Input.Keyboard.JustDown(this.keyRIGHT)) {
-            this.scene.start('playScene');
+            this.scene.start('playScene2');
         }
     }
 }

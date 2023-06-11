@@ -27,6 +27,13 @@ class Placeable extends Phaser.Physics.Arcade.Sprite{
     
         // State tracker
         this.currentObjectOver = null;
+
+        // Set up drop
+        this.on('drop',()=>{
+            console.log("got Emit");
+            this.placed = false;
+            this.setGravityY(650);
+        })
     }
 
     // When picture collides with another mark that other object as above the placeable
@@ -42,7 +49,7 @@ class Placeable extends Phaser.Physics.Arcade.Sprite{
 
     // Place the placeable object over currently hovered object
     place(){
-        this.setOrigin(0)
+        //this.setOrigin(0)
         this.x = this.currentObjectOver.x;
         this.y = this.currentObjectOver.y;
         this.placed = true;

@@ -15,9 +15,9 @@ class Play_2 extends Phaser.Scene{
 
         // Set up timer text
         let timerConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Arial',
             fontSize: '28px',
-            color: '#FFFFFF',
+            color: '#000000',
             lineSpacing: 20,
             wordWrap: { width: 500, useAdvancedWrap: true, spacing: 10 }
         }
@@ -39,15 +39,17 @@ class Play_2 extends Phaser.Scene{
         });
        
         // Pre-define Target Spots
-        this.spots = [[490,122],[488,372],[686,244],[292,244],[94,123]]
+        this.spots = [[w/2,h/2],[503,230],[430,300],[240,340],[w*0.7,350]]
         this.spotIndex = 0; // Tracks what target coordinate is next
 
         // Set up order for car parts
         this.carParts = ['car_base','car_top','car_door','car_left','car_right']
+        this.carTargets = ['car_base_target','car_top_target','car_door_target','car_left_target','car_right_target']
         
         // Set up Environment
         this.add.image(0,0,'background_2').setOrigin(0).setDepth(-1);
-        this.add.image(w/2,h,'box_2').setOrigin(0.5,0.9).setDepth(1);
+        this.add.image(w/2,h+48,'box_2').setOrigin(0.5,0.9).setDepth(1);
+        this.add.image(w/2,h/2,'car_background').setOrigin(0.5).setDepth(-1);
 
         // Set up pictures and targets groups
         let config = {
@@ -59,7 +61,7 @@ class Play_2 extends Phaser.Scene{
         this.target = this.add.group(config);
 
         // Create first photo
-        this.pictures.add(new Placeable(this,299/2,h-40,this.photos[this.spotIndex]));
+        this.pictures.add(new Placeable(this,w/2,h-40,this.carParts[this.spotIndex]));
 
         // Set up drag based input on pictures
         this.input.on('gameobjectdown', (pointer, gameObject) =>
@@ -73,7 +75,10 @@ class Play_2 extends Phaser.Scene{
         });
 
         // Create first Target
-        this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'car_base_target').setOrigin(0).setDepth(-1));
+        this.target.add(new Target(this,
+            this.spots[this.spotIndex][0],
+            this.spots[this.spotIndex][1],
+            this.carTargets[this.spotIndex]).setOrigin(0.5).setDepth(this.spots.length-this.spotIndex-1));
 
     }
 
@@ -92,12 +97,21 @@ class Play_2 extends Phaser.Scene{
         if(this.target.getLength() == 0){
             this.spotIndex += 1
 
+            // If there is more targets to create, add them using array spots information
             if(this.spotIndex < this.spots.length){
-                this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'car_base_target').setOrigin(0).setDepth(-1));
+                this.target.add(new Target(this,
+                    this.spots[this.spotIndex][0],
+                    this.spots[this.spotIndex][1],
+                    this.carTargets[this.spotIndex]).setOrigin(0.5).setDepth(this.spots.length-this.spotIndex-1));
+            }else{
+
+                // Otherwise, as it is game 2, drop them all and restart!
+                console.log("emitted");
+                this.pictures.emit('drop');
             }
             
             // Create new picture
-            this.pictures.add(new Placeable(this,299/2,h-40,this.photos[this.spotIndex]));
+            this.pictures.add(new Placeable(this,w/2,h-100,this.carParts[this.spotIndex]));
         }
     }
 

@@ -21,7 +21,7 @@ class Loading extends Phaser.Scene{
 
         // Game 2 Assets
         this.load.setPath("./assets/Game 2/"); 
-        this.load.image('background','background_2.png')
+        this.load.image('background_2','background_2.png')
         this.load.image('box_2','box_2.png')
         this.load.image('car_background','car_background_2.png')
         this.load.image('car_base','car_base_2.png')

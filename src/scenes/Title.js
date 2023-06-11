@@ -44,7 +44,7 @@ class Title extends Phaser.Scene{
                 this.main.text = "You play as Sal, a Italian American Restaurant owner setting up his wall of Fame. You will notice a lack of room for non Italian Americans, which builds the center conflict of the story."
             }
             if(this.index == 1){
-                this.scene.start('playScene');
+                this.scene.start('playScene2');
             }
             this.index += 1;
         }
