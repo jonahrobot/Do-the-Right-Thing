@@ -1,35 +1,47 @@
-// Picture Prefab
-class Picture extends Phaser.Physics.Arcade.Sprite{
+/*
+    Base class for all draggable and placeable objects.
+*/
+class Placeable extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture, frame, group){
         super(scene, x, y, texture, frame);
 
-        // add object to existing scene
+        // Add to Phaser systems
         scene.add.existing(this);
         scene.physics.add.existing(this);  
-        this.body.setCollideWorldBounds(true);  
 
+        // Set up phaser properties
+        this.body.setCollideWorldBounds(true);  
+        this.setInteractive();
+
+        // Remember scene
         this.scene = scene;
+
+        // Drag states
         this.heldDown = false;
         this.placed = false;
-
-        this.group = group;
         this.placed = false;
         this.over = false;
-        this.currentObjectOver = null;
 
-        this.setInteractive();
+        // Group
+        this.group = group;
+    
+        // State tracker
+        this.currentObjectOver = null;
     }
 
+    // When picture collides with another mark that other object as above the placeable
     onHit(hitObject){
         this.over = true;
         this.currentObjectOver = hitObject;
 
+        // When not hitting something, not over
         this.scene.time.delayedCall(100, () => { 
             this.over = false;
         });
     }
 
-    placePicture(){
+    // Place the placeable object over currently hovered object
+    place(){
         this.setOrigin(0)
         this.x = this.currentObjectOver.x;
         this.y = this.currentObjectOver.y;
@@ -37,25 +49,31 @@ class Picture extends Phaser.Physics.Arcade.Sprite{
         this.currentObjectOver.destroy();
     }
 
+    // Toggle if held down from outside object
     setHeldDown(bool){
         this.heldDown = bool;
     }
 
     update(){
-        
+
+        // If already placed, stop update
         if(this.placed){
             return;
         }
 
+        // Move with mouse if being dragged
         if(this.heldDown){
             this.x = game.input.mousePointer.x;
             this.y = game.input.mousePointer.y;
             this.setGravityY(0);
             this.setVelocity(0)
         }else{
+
+            // If not held down and over something, place
             if(this.over == true){
-                this.placePicture();
+                this.place();
             }else{
+                // Otherwise apply gravity
                 this.setGravityY(650);
             }
         }

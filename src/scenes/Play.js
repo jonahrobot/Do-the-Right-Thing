@@ -1,3 +1,4 @@
+// Scene 1: Hall of Fame Wall
 class Play extends Phaser.Scene{
     constructor(){
         super("playScene");
@@ -8,7 +9,7 @@ class Play extends Phaser.Scene{
         let w = game.config.width;
         let h = game.config.height;
 
-        // Timer Font
+        // Set up timer text
         let timerConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -17,21 +18,34 @@ class Play extends Phaser.Scene{
             wordWrap: { width: 500, useAdvancedWrap: true, spacing: 10 }
         }
 
-        this.timer = 6000;
-        this.initTime = this.time.now;
+        this.timerText = this.add.text(w - 128, 64, this.timer, timerConfig).setOrigin(0.5);
 
-        // Pre Define Target Spots
+        // Start Timer
+        this.timerLength = 20000;
+
+        // When timer ends trigger play.onGameTimerend
+        this.timedEvent = this.time.addEvent({  
+            delay: this.timerLength, 
+            callback: this.onGameTimerend(),
+            args: [],
+            loop: false,
+            repeat: 0,
+            timeScale: 1,
+            paused: true
+        });
+       
+        // Pre-define Target Spots
         this.spots = [[490,122],[488,372],[686,244],[292,244],[94,123]]
-        this.spotIndex = 0;
+        this.spotIndex = 0; // Tracks what target coordinate is next
 
-        // Create array of photos
+        // Set up order for picture frames
         this.photos = ['photo_1','photo_2','photo_3','photo_4','photo_5','photo_6']
         
-        // Create Background
+        // Set up Environment
         this.add.image(0,0,'spr_background_1').setOrigin(0).setDepth(-1);
         this.add.image(299/2,h,'box').setOrigin(0.5,0.9).setDepth(1);
 
-        // Create Groups
+        // Set up pictures and targets groups
         let config = {
             classType: Phaser.Physics.Arcade.Sprite,
             runChildUpdate: true
@@ -40,11 +54,10 @@ class Play extends Phaser.Scene{
         this.pictures = this.add.group(config);
         this.target = this.add.group(config);
 
-        // Create Photos
-        this.pictures.add(new Picture(this,299/2,h-40,this.photos[this.spotIndex]));
-        //this.pictures.add(new Picture(this,100,h/4,'photo_2'));
+        // Create first photo
+        this.pictures.add(new Placeable(this,299/2,h-40,this.photos[this.spotIndex]));
 
-        // Set up Input
+        // Set up drag based input on pictures
         this.input.on('gameobjectdown', (pointer, gameObject) =>
         {
             gameObject.setHeldDown(true);
@@ -55,10 +68,9 @@ class Play extends Phaser.Scene{
             gameObject.setHeldDown(false);
         });
 
-        // Create Target
+        // Create first Target
         this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0).setDepth(-1));
-    
-        this.timerText = this.add.text(w - 64, 64, this.timer, timerConfig).setOrigin(0.5);
+
     }
 
     update(){
@@ -66,14 +78,13 @@ class Play extends Phaser.Scene{
         let w = game.config.width;
         let h = game.config.height;
 
-        // Finally, Check for collisions
-
+        // Check if pictures and targets collide, if they do run play.collision
         this.physics.world.collide(this.pictures, this.target, this.collision, null, this);
 
-        this.timer = Math.floor(this.timer) - Math.floor((this.time.now-this.initTime)/1000);
-        this.timerText.text = this.timer;
+        // Update Timer with current progress
+        this.timerText.setText(`Time: ${Math.floor(this.timedEvent.getRemainingSeconds()).toString()}`);
 
-        // No target, create new target
+        // If no target, create new target
         if(this.target.getLength() == 0){
             this.spotIndex += 1
 
@@ -82,11 +93,21 @@ class Play extends Phaser.Scene{
             }
             
             // Create new picture
-            this.pictures.add(new Picture(this,299/2,h-40,this.photos[this.spotIndex]));
+            this.pictures.add(new Placeable(this,299/2,h-40,this.photos[this.spotIndex]));
         }
     }
 
+    // Runs when a picture and target collide
     collision(picture,target){
+
+        // Trigger pictures onHit method to attach picture
         picture.onHit(target);
+
+        this.timedEvent.paused = false;
+    }
+
+    // Runs when game timer ends
+    onGameTimerend(){
+        console.log("loss");
     }
 }
