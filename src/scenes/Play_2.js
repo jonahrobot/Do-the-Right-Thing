@@ -80,6 +80,9 @@ class Play_2 extends Phaser.Scene{
             this.spots[this.spotIndex][1],
             this.carTargets[this.spotIndex]).setOrigin(0.5).setDepth(this.spots.length-this.spotIndex-1));
 
+        // Track if items have fallen, don't respawn car parts if so
+        this.itemsFell = false;
+
     }
 
     update(){
@@ -104,14 +107,17 @@ class Play_2 extends Phaser.Scene{
                     this.spots[this.spotIndex][1],
                     this.carTargets[this.spotIndex]).setOrigin(0.5).setDepth(this.spots.length-this.spotIndex-1));
             }else{
-
-                // Otherwise, as it is game 2, drop them all and restart!
-                console.log("emitted");
-                this.pictures.emit('drop');
+                this.pictures.getChildren().forEach(function(item) {
+                   item.drop();
+                }, this);
+                this.itemsFell = true;
+                this.spotIndex = -1;
             }
             
             // Create new picture
-            this.pictures.add(new Placeable(this,w/2,h-100,this.carParts[this.spotIndex]));
+            if(this.itemsFell == false){
+                this.pictures.add(new Placeable(this,w/2,h-100,this.carParts[this.spotIndex]));
+            }
         }
     }
 
