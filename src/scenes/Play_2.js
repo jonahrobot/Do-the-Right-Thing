@@ -1,7 +1,7 @@
-// Scene 1: Hall of Fame Wall
-class Play extends Phaser.Scene{
+// Scene 2: Car Repair
+class Play_2 extends Phaser.Scene{
     constructor(){
-        super("playScene");
+        super("playScene2");
     }
 
     create(){
@@ -42,12 +42,12 @@ class Play extends Phaser.Scene{
         this.spots = [[490,122],[488,372],[686,244],[292,244],[94,123]]
         this.spotIndex = 0; // Tracks what target coordinate is next
 
-        // Set up order for picture frames
-        this.photos = ['photo_1','photo_2','photo_3','photo_4','photo_5','photo_6']
+        // Set up order for car parts
+        this.carParts = ['car_base','car_top','car_door','car_left','car_right']
         
         // Set up Environment
-        this.add.image(0,0,'spr_background_1').setOrigin(0).setDepth(-1);
-        this.add.image(299/2,h,'box').setOrigin(0.5,0.9).setDepth(1);
+        this.add.image(0,0,'background_2').setOrigin(0).setDepth(-1);
+        this.add.image(w/2,h,'box_2').setOrigin(0.5,0.9).setDepth(1);
 
         // Set up pictures and targets groups
         let config = {
@@ -73,7 +73,7 @@ class Play extends Phaser.Scene{
         });
 
         // Create first Target
-        this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0).setDepth(-1));
+        this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'car_base_target').setOrigin(0).setDepth(-1));
 
     }
 
@@ -93,7 +93,7 @@ class Play extends Phaser.Scene{
             this.spotIndex += 1
 
             if(this.spotIndex < this.spots.length){
-                this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'photo_spot').setOrigin(0).setDepth(-1));
+                this.target.add(new Target(this,this.spots[this.spotIndex][0],this.spots[this.spotIndex][1],'car_base_target').setOrigin(0).setDepth(-1));
             }
             
             // Create new picture
