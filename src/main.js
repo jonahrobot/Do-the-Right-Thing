@@ -4,6 +4,8 @@ Name: Jonah Ryan
 Game: Do the Right Thing
 Hours spent: 35
 
+Components Used: Tween, Timer, Text Objects, Arcade Physics, Cameras
+
 */
 
 let config = {

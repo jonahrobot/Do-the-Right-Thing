@@ -31,7 +31,7 @@ class ending extends Phaser.Scene{
         // Create menu text
         this.title = this.add.text(2*(w/4.5), h/4, 'END', menuConfig).setOrigin(0);
         menuConfig.fontSize = '20px'
-        this.main = this.add.text(2*(w/4.5), h/2.5, 'That is all the scenes thank you for playing! See sources used below in HTML.', menuConfig).setOrigin(0);
+        this.main = this.add.text(2*(w/4.5), h/2.5, 'That is all the scenes thank you for playing!\n Developed by: Jonah Ryan', menuConfig).setOrigin(0);
 
     }
 }
